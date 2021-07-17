@@ -54,7 +54,7 @@ interface ICurrency
 	 * @param string $lang that is in ISO 639-1 format, ex: en, fr, ...
 	 * @param string|null $locale that is the locale of the lang in ISO ISO 3166_1_alpha2 format, ex: US, UK
 	 */
-	public function getTitle(string $lang, ?string $locale = null): ?string;
+	public function getTitle(string $lang, ?string $locale = null): ?Expression;
 
 	/**
 	 * Set the title of the currency

@@ -118,7 +118,7 @@ class Currency implements ICurrency
 	 */
 	public function getPrefixes(): array
 	{
-		return [];
+		return array_merge(...$this->prefixes);
 	}
 
 	/**
@@ -126,7 +126,22 @@ class Currency implements ICurrency
 	 */
 	public function setPrefix(Expression $prefix): void
 	{
-
+		$lang = $prefix->getLanguage();
+		if (!isset($this->prefixes[$lang]))
+		{
+			$this->prefixes[$lang] = array();
+		}
+		if ($this->prefixes[$lang])
+		{
+			foreach ($this->prefixes[$lang] as $key => $item)
+			{
+				if ($item->getLocale() === $prefix->getLocale())
+				{
+					unset($this->prefixes[$lang][$key]);
+				}
+			}
+		}
+		$this->prefixes[$lang][] = $prefix;
 	}
 
 	/**
@@ -135,7 +150,7 @@ class Currency implements ICurrency
 	 * @param string $lang that is in ISO 639-1 format, ex: en, fr, ...
 	 * @param string|null $locale that is the locale of the lang in ISO ISO 3166_1_alpha2 format, ex: US, UK
 	 */
-	public function getTitle(string $lang, ?string $locale = null): ?string
+	public function getTitle(string $lang, ?string $locale = null): ?Expression
 	{
 		$byLang = $this->titles[$lang] ?? null;
 		if ($byLang)
@@ -146,13 +161,12 @@ class Currency implements ICurrency
 				{
 					if ($item->getLocale() === $locale)
 					{
-						return $item->getValue();
+						return $item;
 					}
 				}
 				return null;
 			}
-			$first = $byLang[0] ?? null;
-			return $first ? $first->getValue() : null;
+			return $byLang[0] ?? null;
 		}
 		return null;
 	}
@@ -162,7 +176,22 @@ class Currency implements ICurrency
 	 */
 	public function setTitle(Expression $title): void
 	{
-
+		$lang = $title->getLanguage();
+		if (!isset($this->titles[$lang]))
+		{
+			$this->titles[$lang] = array();
+		}
+		if ($this->titles[$lang])
+		{
+			foreach ($this->titles[$lang] as $key => $item)
+			{
+				if ($item->getLocale() === $title->getLocale())
+				{
+					unset($this->titles[$lang][$key]);
+				}
+			}
+		}
+		$this->titles[$lang][] = $title;
 	}
 
 	/**

@@ -245,6 +245,7 @@ class Money extends AbstractMoney
 
     public function __toString(): string
     {
-        return $this->amount->__toString() . ' ' . $this->currency->getTitle("fa");
+        $title = $this->currency->getTitle("fa");
+        return $this->amount->__toString() . ' ' . ($title ? $title->getValue() : "");
     }
 }
